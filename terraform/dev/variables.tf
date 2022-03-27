@@ -9,7 +9,7 @@ variable "tags" {
   type = map(string)
   default = {
     ProvisionedBy = "Terraform"
-    Environment = "environment"
+    Environment = "Development"
   }
 }
 

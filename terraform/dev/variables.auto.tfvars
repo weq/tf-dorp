@@ -1,0 +1,12 @@
+location                  = "westeurope"
+#environment               = "dev"
+#container_registry        = "srtprodacr"
+#sqlUser                   = "scanreachSQLadmin"
+#sqlServerVersion          = "12.0"
+#sqlCatalog                = "sqldb-inrange_cloud_api-dev"
+#sqlDBSize                 = "Basic" # GP_S_Gen_5_1
+#sqlDBEdition              = "Basic" # GeneralPurpose | Business | Basic
+#sitesubdomain             = "connectfleet"
+#backendsubdomain          = "connectfleetapi"
+#sitedatastreamsubdomain   = "edgesitedataapi"
+#sensordatasubdomain       = "sensordataapi"
