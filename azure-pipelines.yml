@@ -1,31 +1,146 @@
+name: $(BuildDefinitionName)_$(date:yyyyMMdd)$(rev:.r)
+
+trigger: none
+
+pr: none
+
+parameters:
+
+  - name: Action
+    displayName: Action
+    type: string
+    default: 'Plan'
+    values:
+    - Plan
+    - Apply
+    - Destroy
+
+variables:
+  - name: backendServiceArm
+    value: 'Ironstone-CSP-ScanReach-IT(7399e158-d7a6-4421-872d-79df9badefca)'
+  - name: backendAzureRmResourceGroupName
+    value: 'terraform-state'
+  - name: backendAzureRmStorageAccountName
+    value: 'srttfstate'
+  - name: backendAzureRmContainerName
+    value: 'state'
+  - name: backendAzureRmKey
+    value: 'RS-dev-tf_dorp.tfstate'
+  - name: terraformWorkingDirectory
+    value: '$(System.DefaultWorkingDirectory)/terraform/dev'
+  - name: terraform_version
+    value: '1.1.17'
+  - name: action
+    value: ${{ parameters.Action }}
+
+stages :   
+  - stage: terraform_plan_apply
+    condition: ne('${{ parameters.Action }}', 'Destroy')
+    jobs:
+      - job: terraform_apply
+        steps:
+          - task: TerraformInstaller@0
+            displayName: 'install'
+            inputs:
+              terraformVersion: '${{ variables.terraform_version }}'
+          - task: TerraformTaskV2@2
+            displayName: 'init'
+            inputs:
+              provider: 'azurerm'
+              command: 'init'
+              backendServiceArm: '${{ variables.backendServiceArm }}'
+              backendAzureRmResourceGroupName: '${{ variables.backendAzureRmResourceGroupName }}'
+              backendAzureRmStorageAccountName: '${{ variables.backendAzureRmStorageAccountName }}'
+              backendAzureRmContainerName: '${{ variables.backendAzureRmContainerName }}'
+              backendAzureRmKey: '${{ variables.backendAzureRmKey }}' 
+              workingDirectory: '${{ variables.terraformWorkingDirectory }}'
+          - task: TerraformTaskV2@2
+            displayName: 'plan'
+            condition: and(succeeded(), eq(variables['Action'], 'Plan'))
+            inputs:
+              provider: 'azurerm'
+              command: 'plan'
+              environmentServiceNameAzureRM: '${{ variables.backendServiceArm }}'
+              workingDirectory: '${{ variables.terraformWorkingDirectory }}'
+          - task: TerraformTaskV2@2
+            displayName: 'apply'
+            condition: and(succeeded(), eq(variables['Action'], 'Apply'))
+            inputs:
+              provider: 'azurerm'
+              command: 'apply'
+              environmentServiceNameAzureRM: '${{ variables.backendServiceArm }}'
+              workingDirectory: '${{ variables.terraformWorkingDirectory }}'
+
+  - stage: terraform_destroy
+    condition: contains('${{ parameters.Action }}', 'Destroy')
+    jobs:
+      - job: terraform_destroy
+        steps:
+          - task: TerraformTaskV2@2
+            displayName: 'init'
+            inputs:
+              provider: 'azurerm'
+              command: 'init'
+              backendServiceArm: '${{ variables.backendServiceArm }}'
+              backendAzureRmResourceGroupName: '${{ variables.backendAzureRmResourceGroupName }}'
+              backendAzureRmStorageAccountName: '${{ variables.backendAzureRmStorageAccountName }}'
+              backendAzureRmContainerName: '${{ variables.backendAzureRmContainerName }}'
+              backendAzureRmKey: '${{ variables.backendAzureRmKey }}' 
+              workingDirectory: '${{ variables.terraformWorkingDirectory }}'
+          - task: TerraformTaskV2@2
+            displayName: 'destroy'
+            condition: and(succeeded(), eq(variables['action'], 'Destroy'))
+            inputs:
+              provider: 'azurerm'
+              command: 'destroy'
+              environmentServiceNameAzureRM: '${{ variables.backendServiceArm }}'
+              workingDirectory: '${{ variables.terraformWorkingDirectory }}'
+
+
+
+
+
+
+
+
+
+
+
+
 # Starter pipeline
 # Start with a minimal pipeline that you can customize to build and deploy your code.
 # Add steps that build, run tests, deploy, and more:
 # https://aka.ms/yaml
 
-trigger:
-- main
+#trigger:
+#- main
+#
+#pool:
+#  vmImage: ubuntu-latest
 
-pool:
-  vmImage: ubuntu-latest
+#steps:
+#- script: echo Hello, world!
+#  displayName: 'Run a one-line script'
+#
+#- script: |
+#    echo Add other tasks to build, test, and deploy your project.
+#    echo See https://aka.ms/yaml
+#  displayName: 'Run a multi-line script'
 
-steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
 
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
-
-- task: TerraformTaskV2@2
-  inputs:
-    provider: 'azurerm'
-    command: 'init'
-    workingDirectory: '$(System.DefaultWorkingDirectory)\terraform\dev'
-    backendServiceArm: 'Ironstone-CSP-ScanReach-IT(7399e158-d7a6-4421-872d-79df9badefca)'
-    backendAzureRmResourceGroupName: 'terraform-state'
-    backendAzureRmStorageAccountName: 'srttfstate'
-    backendAzureRmContainerName: 'state'
-    backendAzureRmKey: 'RS-dev-tf_dorp.tfstate'
-
+#- task: TerraformTaskV2@2
+#  inputs:
+#    provider: 'azurerm'
+#    command: 'init'
+#    workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/dev'
+#    backendServiceArm: 'Ironstone-CSP-ScanReach-IT(7399e158-d7a6-4421-872d-79df9badefca)'
+#    backendAzureRmResourceGroupName: 'terraform-state'
+#    backendAzureRmStorageAccountName: 'srttfstate'
+#    backendAzureRmContainerName: 'state'
+#    backendAzureRmKey: 'RS-dev-tf_dorp.tfstate'
+#
+#- task: TerraformTaskv2@3
+#  inputs:
+#    provider: 'azurerm'
+#    command: 'plan'
+#    workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/dev'
