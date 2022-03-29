@@ -53,15 +53,3 @@ resource "azurerm_resource_group" "tf-dorp" {
   location = var.location
   tags = var.tags
 }
-
-resource "azurerm_resource_group" "tf-dorp2" {
-  name = "RS-rg-tf_dorp-dev-2"
-  location = var.location
-  tags = var.tags
-}
-
-resource "azurerm_resource_group" "tf-dorp3" {
-  name = "RS-rg-tf_dorp-dev-3"
-  location = var.location
-  tags = var.tags
-}
