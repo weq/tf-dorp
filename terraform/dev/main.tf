@@ -10,13 +10,13 @@ terraform {
       version = ">= 2.97"
     }
   }
-  backend "azurerm" {
-    resource_group_name = "terraform-state"
-    storage_account_name = "srttfstate"
-    container_name = "state"
-    key = "RS-dev-tf_dorp.tfstate"
-    subscription_id = "7399e158-d7a6-4421-872d-79df9badefca"
-  }
+  #backend "azurerm" {
+  #  resource_group_name = "terraform-state"
+  #  storage_account_name = "srttfstate"
+  #  container_name = "state"
+  #  key = "RS-dev-tf_dorp.tfstate"
+  #  subscription_id = "7399e158-d7a6-4421-872d-79df9badefca"
+  #}
 }
 
 ##################################################################################################
@@ -54,13 +54,13 @@ resource "azurerm_resource_group" "tf-dorp" {
   tags = var.tags
 }
 
-resource "azurerm_resource_group" "tf-dorp" {
+resource "azurerm_resource_group" "tf-dorp2" {
   name = "RS-rg-tf_dorp-dev-2"
   location = var.location
   tags = var.tags
 }
 
-resource "azurerm_resource_group" "tf-dorp" {
+resource "azurerm_resource_group" "tf-dorp3" {
   name = "RS-rg-tf_dorp-dev-3"
   location = var.location
   tags = var.tags
