@@ -10,13 +10,13 @@ terraform {
       version = ">= 2.97"
     }
   }
-  #backend "azurerm" {
-  #  resource_group_name = "terraform-state"
-  #  storage_account_name = "srttfstate"
-  #  container_name = "state"
-  #  key = "dev.inrange-cloud-api.tfstate"
-  #  subscription_id = "7399e158-d7a6-4421-872d-79df9badefca"
-  #}
+  backend "azurerm" {
+    resource_group_name = "terraform-state"
+    storage_account_name = "srttfstate"
+    container_name = "state"
+    key = "RS-dev-tf_dorp.tfstate"
+    subscription_id = "7399e158-d7a6-4421-872d-79df9badefca"
+  }
 }
 
 ##################################################################################################
