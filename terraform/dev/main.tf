@@ -54,3 +54,8 @@ resource "azurerm_resource_group" "tf-dorp" {
   tags = var.tags
 }
 
+resource "azurerm_resource_group" "tf-dorp2" {
+  name = "RS-rg-tf_dorp-dev2"
+  location = var.location
+  tags = var.tags
+}
