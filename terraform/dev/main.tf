@@ -63,6 +63,6 @@ provider "azurerm" {
 #  tags = var.tags
 #}
 resource "azuread_group" "tf-dorp" {
-  name = "RS-tf-dorp-dev" 
+  display_name = "RS-tf-dorp-dev" 
 }
 #}
