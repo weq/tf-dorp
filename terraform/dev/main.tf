@@ -9,6 +9,9 @@ terraform {
       source = "hashicorp/azurerm"
       version = ">= 2.97"
     }
+    azuread = {
+      version = "~> 2.15.0"
+    }
   }
   backend "azurerm" {
     #resource_group_name = "terraform-state"
@@ -48,14 +51,17 @@ provider "azurerm" {
 ### Resources
 ##################################################################################################
 
-resource "azurerm_resource_group" "tf-dorp" {
-  name = "RS-rg-tf_dorp-dev"
-  location = var.location
-  tags = var.tags
-}
-
-resource "azurerm_resource_group" "tf-dorp2" {
-  name = "RS-rg-tf_dorp-dev2"
-  location = var.location
-  tags = var.tags
+#resource "azurerm_resource_group" "tf-dorp" {
+#  name = "RS-rg-tf_dorp-dev"
+#  location = var.location
+#  tags = var.tags
+#}
+#
+#resource "azurerm_resource_group" "tf-dorp2" {
+#  name = "RS-rg-tf_dorp-dev2"
+#  location = var.location
+#  tags = var.tags
+#}
+resource "azuread_group" "tf-dorp" {
+  name = "RS-tf-dorp-dev" 
 }
