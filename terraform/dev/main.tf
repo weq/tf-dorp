@@ -64,5 +64,6 @@ provider "azurerm" {
 #}
 resource "azuread_group" "tf-dorp" {
   display_name = "RS-tf-dorp-dev" 
+  security_enabled = true
 }
 #}
