@@ -65,3 +65,4 @@ provider "azurerm" {
 resource "azuread_group" "tf-dorp" {
   name = "RS-tf-dorp-dev" 
 }
+#}
